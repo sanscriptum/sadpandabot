@@ -70,12 +70,14 @@ def embed_titles(exmetas):
 
 # pretty discord embeds for small amount of links
 def embed_full(exmeta):
+    bad_tags = ["female:lolicon", "male:shotacon"]
     em = discord.Embed(title=BeautifulSoup(exmeta['title'], "html.parser").string,
                        url=create_ex_url(exmeta['gid'], exmeta['token']),
                        timestamp=datetime.datetime.utcfromtimestamp(int(exmeta['posted'])),
                        description=BeautifulSoup(exmeta['title_jpn'], "html.parser").string,
                        colour=EH_COLOUR)
-    em.set_image(url=exmeta['thumb'])
+    if not any(ele in exmeta["tags"] for ele in bad_tags):
+        em.set_image(url=exmeta['thumb'])
     em.set_thumbnail(url=G_CATEGORY[exmeta['category']])
     em.set_footer(text=exmeta['filecount'] + " pages")
     em.add_field(name="rating", value=exmeta['rating'])
@@ -85,7 +87,7 @@ def embed_full(exmeta):
 
 # put our tags from the EH JSON response into the discord embed
 def process_tags(em, tags):
-    tag_dict = {'male': [], 'female': [], 'parody': [], 'character': [], 'misc': []}
+    tag_dict = {'language': [], 'male': [], 'female': [], 'parody': [], 'character': [], 'misc': []}
     for tag in tags:
         if ":" in tag:
             splitted = tag.split(":")
@@ -98,6 +100,7 @@ def process_tags(em, tags):
         if tag_dict[ex_tag]:
             em.add_field(name=ex_tag, value=', '.join(tag_dict[ex_tag]))
 
+    add_field("language")
     add_field("male")
     add_field("female")
     add_field("parody")
