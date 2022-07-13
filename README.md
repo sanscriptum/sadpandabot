@@ -9,7 +9,7 @@ A discord bot which grabs E-Hentai metadata for E-Hentai links in the chat using
 Use the docker image for simple installation, otherwise, use `python >= 3.5` and install the packages in `requirements.txt`. Also set the `DISCORD_TOKEN` env variable (or edit the code to use your discord token).
 
 ```
-git clone https://github.com/c0tangent/sadpandabot
+git clone https://github.com/sanscriptum/sadpandabot
 cd sadpandabot
 pip install -r requirements.txt
 python3 sadpandabot.py
